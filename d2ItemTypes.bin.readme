@@ -1,0 +1,7 @@
+This is a dump of Diablo 2 game memory containing an array of 659 data structures each of size 0x1A8 bytes, one for each item type.
+
+This was done in patch 1.14d , the memory address range was [0x05D77FDC,0x05DBC354)
+If it matters, the dump was done while a low-level Expansion character was playing the game in Act 1 Normal.
+Conceivably this stuff might not be loaded until you enter a game? Didnt check.
+
+The structure is described here : https://github.com/Zutatensuppe/DiabloInterface/blob/master/src/D2Reader/Struct/Item/D2ItemDescription.cs

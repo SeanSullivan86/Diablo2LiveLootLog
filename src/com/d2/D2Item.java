@@ -37,6 +37,7 @@ public class D2Item {
 	private List<Affix> affixes;
 	
 	public String getName() {
+		
 		if (quality == ItemQuality.RARE ||
 				quality == ItemQuality.LOW_QUALITY || 
 				quality == ItemQuality.SUPERIOR ||
@@ -63,6 +64,13 @@ public class D2Item {
 		throw new RuntimeException();
 	}
 	
+	int numStats1;
+	int numStats2;
+	
+	public int getByteSize() {
+		return 0x60 + 0x88 + 0x50 + 4 + 8*(numStats1 + numStats2) + 1;
+	}
+	
 	public D2Item(byte[] input) {
 		ByteBuffer buffer = ByteBuffer.wrap(input).order(ByteOrder.LITTLE_ENDIAN);
 
@@ -79,10 +87,10 @@ public class D2Item {
 		int statsDataIndex = 0x60 + 0x88;
 		int numStats1Index = statsDataIndex + 0x50;
 		int statArray1Index = numStats1Index + 2;
-		int numStats1 = buffer.getShort(numStats1Index);
+		numStats1 = buffer.getShort(numStats1Index);
 		int numStats2Index = statArray1Index + 8*numStats1;
 		int statArray2Index = numStats2Index + 2;
-		int numStats2 = buffer.getShort(numStats2Index);
+		numStats2 = buffer.getShort(numStats2Index);
 		this.quality = ItemQuality.forId(buffer.getInt(itemDataIndex + 0x00));
 		
 		this.affixes = new ArrayList<>();

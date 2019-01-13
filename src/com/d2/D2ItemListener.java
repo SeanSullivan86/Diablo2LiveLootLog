@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.websocket.Session;
 
@@ -70,23 +73,24 @@ public class D2ItemListener {
 				if (bytesRead < 15) break;
 				ByteBuffer buffer = ByteBuffer.wrap(header);
 				buffer.order(ByteOrder.LITTLE_ENDIAN);
-				int messageType = buffer.getShort(11);
+				int messageType = buffer.get(12);
 				int messageLength = buffer.getShort(13);
 				//System.out.println(messageType);
 				//System.out.println(messageLength);
+				int messageBodyLength = messageLength - 15 -10;
 				
-				byte[] messageBody = new byte[messageLength];
+				byte[] messageBody = new byte[messageBodyLength];
 				bytesRead = in.read(messageBody);
-				if (bytesRead < messageLength) break;
+				if (bytesRead < messageBodyLength) break;
 				handleItem(messageBody);
 				
-				byte[] footer = new byte[9];
+				byte[] footer = new byte[10];
 				bytesRead = in.read(footer);
-				if (bytesRead < 9) break;
+				if (bytesRead < 10) break;
 				
 				//System.out.println(messageType + " : " + messageLength);
 				
-				bytesInSuccessfulItems += 15 + messageLength + 9;
+				bytesInSuccessfulItems += messageLength;
 			}
 			
 			//System.out.println("Sleeping");
@@ -115,15 +119,18 @@ public class D2ItemListener {
 
 	
 	private void handleItem(byte[] inputArray) {
-		D2Item item = new D2Item(inputArray);
+		//D2Item item = new D2Item(inputArray);
 		ItemDropContext dropContext = new ItemDropContext(inputArray);
+		
+		/*
 		System.out.println(item.getDisplayString());
 		try {
 			System.out.println(jackson.writeValueAsString(item));
 		} catch (JsonProcessingException e1) {
 			throw new RuntimeException(e1);
 		}
-		
+		*/
+		/*
         for (Session session : D2ItemsEndpoint.sessions.values()) {
         	try {
 				session.getBasicRemote().sendText(jackson.writeValueAsString(item));
@@ -131,6 +138,9 @@ public class D2ItemListener {
 				e.printStackTrace();
 			}
         }
+        
+        
+        */
 		/*
 		if (item.getQuality() == ItemQuality.RARE || ((Math.random()<0.1))) {
 			//items.add(item);
@@ -170,15 +180,81 @@ public class D2ItemListener {
 		
 	}
 	
+	static class Monster {
+		int monsterTypeId;
+		Set<Integer> flags;
+		int uniqueMonsterId;
+		int stringId;
+		String monsterName;
+		
+		public Monster(ByteBuffer data) {
+			monsterTypeId = data.getInt(0);
+			int flagByte = (int) (data.get(4) & 0xff);
+			flags =  new HashSet<>();
+			for (int i = 0; i < 8; i++) {
+				if ((flagByte % 2) == 1) {
+					flags.add(i);
+				}
+				flagByte = flagByte >> 1;
+			}
+			
+			
+			uniqueMonsterId = data.get(5);
+			stringId = data.getShort(6);
+			this.monsterName = CombinedStringsDao.get().getString(stringId);
+		}
+
+		public int getMonsterTypeId() {
+			return monsterTypeId;
+		}
+
+		public Set<Integer> getFlags() {
+			return flags;
+		}
+
+		public int getUniqueMonsterId() {
+			return uniqueMonsterId;
+		}
+
+		public int getStringId() {
+			return stringId;
+		}
+
+		public String getMonsterName() {
+			return monsterName;
+		}
+		
+		
+	}
+	
 	static class ItemDropContext {
-		private int monsterType;
-		private int objectType;
-		private String objectName;
-		private ItemDropSource sourceType;
+		private Monster monster;
+		private List<D2Item> items;
 		
 		public ItemDropContext(byte[] msg) {
 			ByteBuffer buffer = ByteBuffer.wrap(msg).order(ByteOrder.LITTLE_ENDIAN);
+			monster = new Monster(buffer);
+			try {
+				System.out.println("Start of ItemDrop for " + jackson.writeValueAsString(monster));
+			} catch (JsonProcessingException e) {
+				throw new RuntimeException(e);
+			}
+			int nextId = 8;
+			items = new ArrayList<>();
+			//System.out.println("nextId = " + nextId  +" , length= " + msg.length);
+			while (nextId < msg.length) {
+				//System.out.println("nextId = " + nextId  +" , length= " + msg.length);
+				byte[] remainingBytes = Arrays.copyOfRange(msg, nextId, msg.length);
+				D2Item item = new D2Item(remainingBytes);
+				System.out.println(item.getDisplayString());
+				items.add(item);
+				nextId += item.getByteSize();
+				//System.out.println("nextId = " + nextId  +" , length= " + msg.length);
+			}
 			
+			System.out.println("End of ItemDrop ------------");;
+			
+			/*
 			int numStats1Index = 0x60 + 0x88 + 0x50;
 			int statArray1Index = numStats1Index + 2;
 			int numStats1 = buffer.getShort(numStats1Index);
@@ -205,7 +281,7 @@ public class D2ItemListener {
 				objectName = name.toString();
 				System.out.println("Object Name : " + objectName);
 			}
-			
+			*/
 		}
 	}
 	

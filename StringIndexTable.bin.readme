@@ -1,0 +1,37 @@
+String Index table [0x05DF400C, 0x05E0D060)
+0x05DF400C : preamble, size 0x15
+0x05DF4021 : Start of (nameHashCode -> idx) lookup, 2 bytes each , 0x150F entries?
+0x05DF6A3F : Start of StringInfo blocks (each size 0x11) , 0x1511 entries?
+0x05E0D060 : Start of strings
+
+String Address Table [0x069D4614 ,0x069D9A58)
+0x069D4614 : Start of table, 0x1511 entries of size 4? Pointers to char arrays
+   First entry : 0x0688004C
+   Last entry  : 0x068EE3C0 (last string appears to end at 0x068EE43B
+0x069D9A58 : Endpoint (exclusive)
+
+Strings [0x0688004C , 0x068EE43C)
+
+
+Expansion String Index Table [0x68EE44C, 0x68EFA65)
+068EE44C : preamble : size 0x15
+068EE461 : Start of lookups (2 bytes each), 0x0B02 entries
+068EFA65
+
+Expansion String address table [0x05E54B64 , 0x05E57770)
+0x05E54B64 : Start of table, 0x0B03 entries of size 4
+  first entry : 05E5A53C
+  last entry :  05E83BC4 (ends at 0x05E83BE1 inclusive)
+0x05E57770 end
+
+
+patch strings index
+069D9A64 : start
+069D9A79 : start of data (2 bytes each, 0x049B entries)
+0x69DA3AF end
+
+patch strings address table [05E538E4
+05E538E4 : start, 0x049D entries of size 4
+  first entry : 069E6CA4
+  last entry : 069EF702 (ends at 0x069EF705 inclusive)
+0x5E54B58 end

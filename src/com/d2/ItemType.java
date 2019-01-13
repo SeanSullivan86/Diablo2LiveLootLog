@@ -18,7 +18,8 @@ public class ItemType {
 	}
 	
 	public String getName() {
-		return name;
+		return CombinedStringsDao.get().getString(ItemType2Dao.get().getItemType(id).getNameStringId());
+				
 	}
 
 	public String getCode() {
