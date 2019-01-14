@@ -12,7 +12,7 @@ public class Affix {
 		buffer.order(ByteOrder.LITTLE_ENDIAN);
 		
 		int len = 0;
-		String name = "";
+		String name = ""; // the "name" here isn't the true in-game string.
 		for (len = 0; len < 144; len++) {
 			if (buffer.get(len) == 0) break;
 			name += (char) (buffer.get(len));
@@ -24,6 +24,10 @@ public class Affix {
 		this.id = id;
 		this.name = name;
 		this.isSuffix = name.startsWith("of ");
+		
+		int stringId = buffer.getShort(0x20);
+		name = CombinedStringsDao.get().getString(stringId);
+		
 	}
 
 	public String getName() {

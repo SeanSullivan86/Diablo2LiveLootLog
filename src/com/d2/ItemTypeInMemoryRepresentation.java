@@ -3,12 +3,12 @@ package com.d2;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class ItemType2 {
+public class ItemTypeInMemoryRepresentation {
 	private int id;
 	private String code;
 	private short nameStringId;
 	
-	ItemType2(int id, byte[] bytes) {
+	ItemTypeInMemoryRepresentation(int id, byte[] bytes) {
 		this.id = id;
 		ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.LITTLE_ENDIAN);
 		this.code = "" +  ((char) buffer.get(0x80)) + ((char) buffer.get(0x81)) + ((char) buffer.get(0x82));

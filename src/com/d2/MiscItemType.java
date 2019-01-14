@@ -3,8 +3,9 @@ class MiscItemType extends ItemType{
 
 	private String type;
 
-	public MiscItemType(String[] row) {
-		super(Integer.parseInt(row[0]), row[1], row[14], row[24]);
+	public MiscItemType(ItemTypeInMemoryRepresentation itemTypeInMemoryRepresentation, String[] row) {
+		// row[1] has name from file
+		super(Integer.parseInt(row[0]), CombinedStringsDao.get().getString(itemTypeInMemoryRepresentation.getNameStringId()), row[14], row[24]);
 		
 		this.type = row[33];
 

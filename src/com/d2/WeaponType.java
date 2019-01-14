@@ -5,14 +5,14 @@ public class WeaponType extends ItemType {
 	private String exceptionalVersionCode;
 	private String eliteVersionCode;
 
-	public WeaponType(String[] row, int id) {
-		super(id, row[0], row[3], row[48]);
+	public WeaponType(ItemTypeInMemoryRepresentation itemTypeInMemoryRepresentation, String[] row, int id) {	
+		super(id, CombinedStringsDao.get().getString(itemTypeInMemoryRepresentation.getNameStringId()), row[3], row[48]);
 		this.type = row[1];
 		this.normalVersionCode = row[34];
 		this.exceptionalVersionCode = row[35];
 		this.eliteVersionCode = row[36];
 	}
-
+	
 	public String getType() {
 		return type;
 	}

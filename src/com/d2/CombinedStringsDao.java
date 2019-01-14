@@ -35,7 +35,7 @@ class CombinedStringsDao {
 		}
 		
 		if (result == null) {
-			System.out.println("Error : Cannot find string with id " + id);
+			//System.out.println("Error : Cannot find string with id " + id);
 			return "UNKNOWN_STRING_" + id;
 		}
 		
@@ -48,5 +48,16 @@ class CombinedStringsDao {
 			INSTANCE = new CombinedStringsDao();
 		}
 		return INSTANCE;
+	}
+	
+	public static void main(String[] args) {
+		CombinedStringsDao dao = CombinedStringsDao.get();
+		
+		for (int i = 0; i < 30000; i++) {
+			String result = dao.getString(i);
+			if (! result.startsWith("UNKNOWN_STRING")) {
+				System.out.println(i + "|" + result);
+			}
+		}
 	}
 }

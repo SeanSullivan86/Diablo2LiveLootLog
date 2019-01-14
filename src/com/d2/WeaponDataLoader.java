@@ -10,7 +10,9 @@ public class WeaponDataLoader {
 	Map<Integer,WeaponType> weaponTypesById;
 	
 	
-	public static Map<Integer,WeaponType> loadFromFile(File weaponMpqFile) {
+	public static Map<Integer,WeaponType> loadFromFile(
+			Map<Integer,ItemTypeInMemoryRepresentation> itemTypesInMemoryRepresentation, 
+			File weaponMpqFile) {
 		Map<Integer,WeaponType> weaponTypesById = new HashMap<>();
 		
 		BufferedReader in = null;
@@ -23,8 +25,7 @@ public class WeaponDataLoader {
 			int id = 0;
 			while ( (line = in.readLine()) != null) {
 				parts = line.split("\t",-1);
-				
-				WeaponType type = new WeaponType(parts, id++);
+				WeaponType type = new WeaponType(itemTypesInMemoryRepresentation.get(id), parts, id++);
 				weaponTypesById.put(type.getId(), type);
 				System.out.println(type);
 			}

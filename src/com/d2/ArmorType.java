@@ -6,8 +6,8 @@ public class ArmorType extends ItemType {
 	private String eliteVersionCode;
 	
 
-	public ArmorType(String[] row, int id) {
-		super(id, row[0], row[17], row[34]);
+	public ArmorType(ItemTypeInMemoryRepresentation itemTypeInMemoryRepresentation, String[] row, int id) {
+		super(id, CombinedStringsDao.get().getString(itemTypeInMemoryRepresentation.getNameStringId()), row[17], row[34]);
 		this.type = row[48];
 		this.normalVersionCode = row[23];
 		this.exceptionalVersionCode = row[24];

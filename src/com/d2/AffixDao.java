@@ -22,4 +22,8 @@ public class AffixDao {
 	public Affix getById(int id) {
 		return affixesById.get(id);
 	}
+	
+	public static void main(String[] args) {
+		AffixDao.get();
+	}
 }
