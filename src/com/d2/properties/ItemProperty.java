@@ -70,7 +70,21 @@ public class ItemProperty {
 		if (id == 107) {
 			return "+" + value.getValue() + " to " + Skill.forId(value.getMod()).getName();
 		}
-		
+		if (id >= 195 && id <= 201) {
+			Skill skill = Skill.forId(value.getMod() >> 6);
+		    int level = value.getMod() % 64;
+		    
+		    String event = null;
+		    switch(id) {
+			    case 195 : event = "on Attack"; break;
+			    case 196 : event = "on Kill"; break;
+			    case 197 : event = "on Death"; break;
+			    case 198 : event = "on Striking"; break;
+			    case 199 : event = "on Level Up"; break;
+			    case 201 : event = "when Struck"; break;
+		    }
+		    return value.getValue()+"% Chance to cast Level " + level + " " + skill.getName() + " " + event;
+		}
 		StringBuilder x = new StringBuilder();
 		x.append(value.getValue() + " " +getName());
 		

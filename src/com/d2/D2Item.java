@@ -68,7 +68,7 @@ public class D2Item {
 	int numStats2;
 	
 	public int getByteSize() {
-		return 0x60 + 0x88 + 0x50 + 4 + 8*(numStats1 + numStats2) + 1;
+		return 0x60 + 0x88 + 0x50 + 4 + 8*(numStats1 + numStats2);
 	}
 	
 	public D2Item(byte[] input) {
@@ -106,6 +106,7 @@ public class D2Item {
 			int a = buffer.getShort(offset);
 			int b = buffer.getShort(offset+2);
 			int c = buffer.getInt(offset+4);
+			
 			if (propertyDao.getById(b) == null) {
 				System.out.println("Cannot find property : " + b);
 			} else {
