@@ -1,7 +1,7 @@
 package com.d2;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-
+/*
 import org.glassfish.tyrus.server.Server;
 
 public class TestWebsocketServer {
@@ -24,4 +24,6 @@ public class TestWebsocketServer {
 	        server.stop();
 	    }
 	}
-}
+} */
+
+public class TestWebsocketServer { }

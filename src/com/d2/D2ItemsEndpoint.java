@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-
+/*
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -47,3 +47,7 @@ public class D2ItemsEndpoint{
         System.out.println(throwable.getMessage() + " : " + Throwables.getStackTraceAsString(throwable));
     }
 }
+
+ */
+
+public class D2ItemsEndpoint{ }

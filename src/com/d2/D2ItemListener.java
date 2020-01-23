@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.websocket.Session;
+//import javax.websocket.Session;
 
 import com.d2.properties.ItemProperty;
 import com.d2.properties.ItemPropertyDao;
@@ -47,7 +47,7 @@ public class D2ItemListener {
 		
 	public void start() throws IOException  {	
 		
-		TestWebsocketServer.runServer();
+		//TestWebsocketServer.runServer();
 		
 		in = new BufferedInputStream(new FileInputStream( inputFile));
 		
@@ -105,7 +105,8 @@ public class D2ItemListener {
 	}
 	
 	public static List<D2Item> items = new ArrayList<>();
-	
+
+	/*
 	public static void sendItems(Session session) {
 		for (D2Item item : items) {
 			try {
@@ -114,7 +115,7 @@ public class D2ItemListener {
 				e.printStackTrace();
 			}
 		}
-	}
+	} */
 	
 
 	
